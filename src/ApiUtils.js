@@ -1,4 +1,4 @@
-const API_KEY = 'e603c81547e24fff301fe9f1ce8aa828';
+import { API_KEY } from './APIKEY';
 
 const openWeatherRequest = (path) => (
   fetch(`http://api.openweathermap.org/data/2.5${path}`)
