@@ -1,12 +1,31 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:300');
+
+html, body {
+  height: 100%;
+}
+
+#main {
+  height: 100%;
+  background: #fe8c00;
+  background: linear-gradient(to top, #fe8c00, #f83600);
+}
+
 body {
   margin: 0;
   padding: 0;
 }
 
 .app-wrapper {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  // background: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  color: #FFFFFF;
+}
+
+p {
+  margin: 0;
 }

@@ -7,8 +7,9 @@ class Forecast extends React.Component {
     return (
       <div className="day-wrap">
         <div className="day">
-          <h4>{whatDayIsIt((new Date().getDay() + (this.props.index + 1)) % 7)}</h4>
+          <p>{whatDayIsIt((new Date().getDay() + (this.props.index + 1)) % 7)}</p>
         </div>
+        <img className="forecast-icon" src={require(`../${this.props.icons[convertIconID(this.props.forecasts[this.props.index].weather[0].id)].image}`)} alt=""/>
         <div className="temp">
           <span className="high">
             {Math.floor(this.props.forecasts[this.props.index].temp.max)}&deg;
@@ -17,7 +18,6 @@ class Forecast extends React.Component {
           <span className="low">
             {Math.floor(this.props.forecasts[this.props.index].temp.min)}&deg;
           </span>
-          <img className="forcast-icon" src={require(`../${this.props.icons[convertIconID(this.props.forecasts[this.props.index].weather[0].id)].image}`)} alt=""/>
         </div>
       </div>
     )
