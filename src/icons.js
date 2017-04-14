@@ -1,6 +1,6 @@
 module.exports = {
   thunderstorm: {
-    image: 'css/icons/2.svg'
+    image: 'css/icons/27.svg'
   },
   drizzle: {
     image: 'css/icons/17.svg'
