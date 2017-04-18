@@ -10,6 +10,7 @@
 /build
 src/**/*.css
 src/APIKEY.js
+todo.md
 
 # misc
 .DS_Store
