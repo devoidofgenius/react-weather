@@ -3,6 +3,7 @@ import 'normalize.css';
 
 import Forecast from './Forecast';
 import Current from './Current';
+import TimeLocation from './TimeLocation';
 
 import { fetchData } from '../ApiUtils';
 import icons from '../icons';
@@ -19,8 +20,10 @@ class App extends React.Component {
       currentID: null,
       forecast: null,
       icons: icons,
+      time: (new Date()).toLocaleTimeString(),
     };
   }
+
   componentWillMount() {
     fetchData().then((data) => {
       this.setState({
@@ -33,6 +36,13 @@ class App extends React.Component {
     });
   }
 
+  componentDidMount() {
+    setInterval(this.updateTime.bind(this), 1000);
+  }
+
+  updateTime() {
+    this.setState({ time: (new Date()).toLocaleTimeString() });
+  }
 
   render() {
 
@@ -46,6 +56,7 @@ class App extends React.Component {
 
     return (
       <div className="app-wrapper">
+        <TimeLocation time={this.state.time} city={this.state.city} />
         <div className="current-wrap">
           <Current city={this.state.city} currentTemp={this.state.currentTemp} currentCondition={this.state.currentCondition} currentIconKey={convertIconID(this.state.currentID)} icons={this.state.icons}/>
         </div>

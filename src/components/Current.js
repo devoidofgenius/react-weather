@@ -8,7 +8,7 @@ class Current extends React.Component {
         <p className="current-temp">{this.props.currentTemp}&deg;</p>
         <p className="current-condition">{this.props.currentCondition}</p>
         <img className="current-icon" src={require(`../${this.props.icons[this.props.currentIconKey].image}`)} alt={this.props.currentCondition}/>
-        <p className="current-location"><span className="locate">&#10148;</span>{this.props.city}</p>
+        {/* <p className="current-location"><span className="locate">&#10148;</span>{this.props.city}</p> */}
       </div>
     )
   }
