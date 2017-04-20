@@ -63,6 +63,11 @@ export function whatDayIsIt(day) {
       return 'Saturday'
   }
 }
+
+export function convertToCelcius(temp) {
+  return Math.round(((temp - 32) * 5) / 9);
+}
+
 // if 2xx { thunderstorm } // 27.svg
 // if 3xx { drizzle } // 17.svg
 // if 5xx { rain } // 18.svg

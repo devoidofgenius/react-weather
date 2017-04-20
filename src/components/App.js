@@ -7,33 +7,52 @@ import TimeLocation from './TimeLocation';
 
 import { fetchData } from '../ApiUtils';
 import icons from '../icons';
-import { convertIconID } from '../helpers';
+import { convertIconID, convertToCelcius } from '../helpers';
 import '../css/App.css';
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      city: null,
-      currentTemp: null,
-      currentCondition: null,
-      currentID: null,
-      forecast: null,
       icons: icons,
       time: (new Date()).toLocaleTimeString(),
+      isFahrenheit: true
     };
+    this.toggleTemp = this.toggleTemp.bind(this);
   }
 
   componentWillMount() {
+
+    const forecastTemps = [];
+    const forecastTempsCelcius = [];
+    const forecastIcons = [];
+
     fetchData().then((data) => {
       this.setState({
         city: data.ipData.city,
         currentTemp: Math.floor(data.weatherData.main.temp),
+        currentTempCelcius: convertToCelcius(data.weatherData.main.temp),
         currentCondition: data.weatherData.weather[0].main,
         currentID: data.weatherData.weather[0].id,
         forecasts: data.forecastData.list
       })
-    });
+
+      data.forecastData.list.map(data => {
+        forecastTemps.push({
+          high: data.temp.max,
+          low: data.temp.min
+        })
+        forecastTempsCelcius.push({
+          high: convertToCelcius(data.temp.max),
+          low: convertToCelcius(data.temp.min)
+        })
+        forecastIcons.push(data.weather[0].id)
+      });
+
+    })
+
+    this.setState({ forecastTemps, forecastTempsCelcius, forecastIcons });
+
   }
 
   componentDidMount() {
@@ -42,6 +61,12 @@ class App extends React.Component {
 
   updateTime() {
     this.setState({ time: (new Date()).toLocaleTimeString() });
+  }
+
+  toggleTemp() {
+    this.setState({
+      isFahrenheit: this.state.isFahrenheit ? false : true
+    });
   }
 
   render() {
@@ -56,9 +81,15 @@ class App extends React.Component {
 
     return (
       <div className="app-wrapper">
+        <label id="toggle">
+        	<input type="checkbox" onClick={this.toggleTemp} />
+        	<span id="custom">
+        		<span id="circle"></span>
+        	</span>
+        </label>
         <TimeLocation time={this.state.time} city={this.state.city} />
         <div className="current-wrap">
-          <Current city={this.state.city} currentTemp={this.state.currentTemp} currentCondition={this.state.currentCondition} currentIconKey={convertIconID(this.state.currentID)} icons={this.state.icons}/>
+          <Current isFahrenheit={this.state.isFahrenheit} city={this.state.city} currentTemp={this.state.currentTemp} currentTempCelcius={this.state.currentTempCelcius} currentCondition={this.state.currentCondition} currentIconKey={convertIconID(this.state.currentID)} icons={this.state.icons}/>
         </div>
         <div className="forecast-wrap">
           <div className="forecast">
