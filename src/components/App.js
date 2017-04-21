@@ -15,53 +15,38 @@ class App extends React.Component {
     super();
     this.state = {
       icons: icons,
-      time: (new Date()).toLocaleTimeString(),
-      isFahrenheit: true
+      // time: (new Date()).toLocaleTimeString()
     };
     this.toggleTemp = this.toggleTemp.bind(this);
   }
 
   componentWillMount() {
 
-    const forecastTemps = [];
-    const forecastTempsCelcius = [];
-    const forecastIcons = [];
-
     fetchData().then((data) => {
       this.setState({
         city: data.ipData.city,
         currentTemp: Math.floor(data.weatherData.main.temp),
-        currentTempCelcius: convertToCelcius(data.weatherData.main.temp),
         currentCondition: data.weatherData.weather[0].main,
         currentID: data.weatherData.weather[0].id,
-        forecasts: data.forecastData.list
+        forecasts: data.forecastData.list,
+        isFahrenheit: data.weatherData.sys.country === "US" ? true : false,
+        dt: data.weatherData.dt,
+        todaySunrise: data.weatherData.sys.sunrise,
+        todaySunset: data.weatherData.sys.sunset,
+        isSun: data.weatherData.dt > data.weatherData.sys.sunrise && data.weatherData.dt < data.weatherData.sys.sunset ? true : false
       })
-
-      data.forecastData.list.map(data => {
-        forecastTemps.push({
-          high: data.temp.max,
-          low: data.temp.min
-        })
-        forecastTempsCelcius.push({
-          high: convertToCelcius(data.temp.max),
-          low: convertToCelcius(data.temp.min)
-        })
-        forecastIcons.push(data.weather[0].id)
-      });
-
     })
 
-    this.setState({ forecastTemps, forecastTempsCelcius, forecastIcons });
-
   }
 
-  componentDidMount() {
-    setInterval(this.updateTime.bind(this), 1000);
-  }
 
-  updateTime() {
-    this.setState({ time: (new Date()).toLocaleTimeString() });
-  }
+  // componentDidMount() {
+  //   setInterval(this.updateTime.bind(this), 1000);
+  // }
+  //
+  // updateTime() {
+  //   this.setState({ time: (new Date()).toLocaleTimeString() });
+  // }
 
   toggleTemp() {
     this.setState({
@@ -76,27 +61,31 @@ class App extends React.Component {
         <p>Loading...</p>
       )
     }
-
-    // const iconKey = convertIconID(this.state.currentID);
-
+    function getTime(unixTimeStamp) {
+      const date = new Date(unixTimeStamp * 1000);
+      const hrs = date.getHours();
+      const mins = `0${date.getMinutes()}`;
+      const suffix = hrs >= 12 ? "PM" : "AM";
+      return `${(hrs + 11) % 12 + 1}:${mins.substr(-2)} ${suffix}`
+    }
     return (
       <div className="app-wrapper">
         <label id="toggle">
-        	<input type="checkbox" onClick={this.toggleTemp} />
+        	<input type="checkbox" checked={this.state.isFahrenheit ? false : true} onClick={this.toggleTemp} />
         	<span id="custom">
         		<span id="circle"></span>
         	</span>
         </label>
-        <TimeLocation time={this.state.time} city={this.state.city} />
+        <TimeLocation time={getTime(this.state.dt)} city={this.state.city} />
         <div className="current-wrap">
-          <Current isFahrenheit={this.state.isFahrenheit} city={this.state.city} currentTemp={this.state.currentTemp} currentTempCelcius={this.state.currentTempCelcius} currentCondition={this.state.currentCondition} currentIconKey={convertIconID(this.state.currentID)} icons={this.state.icons}/>
+          <Current isFahrenheit={this.state.isFahrenheit} isSun={this.state.isSun} city={this.state.city} currentTemp={this.state.currentTemp} currentTempCelcius={convertToCelcius(this.state.currentTemp)} currentCondition={this.state.currentCondition} currentIconKey={convertIconID(this.state.currentID)} icons={this.state.icons}/>
         </div>
         <div className="forecast-wrap">
           <div className="forecast">
             {
               Object
                 .keys(this.state.forecasts)
-                .map((key, index) => <Forecast key={key} index={index} forecasts={this.state.forecasts} icons={this.state.icons} />)
+                .map((key, index) => <Forecast key={key} index={index} forecasts={this.state.forecasts} icons={this.state.icons} isFahrenheit={this.state.isFahrenheit} />)
             }
           </div>
         </div>

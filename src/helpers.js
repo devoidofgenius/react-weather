@@ -68,6 +68,11 @@ export function convertToCelcius(temp) {
   return Math.round(((temp - 32) * 5) / 9);
 }
 
+export function checkIfSun(sunrise, sunset) {
+  const time = new Date().getTime();
+  return time > sunrise && time < sunset ? true : false;
+}
+
 // if 2xx { thunderstorm } // 27.svg
 // if 3xx { drizzle } // 17.svg
 // if 5xx { rain } // 18.svg
