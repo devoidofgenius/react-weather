@@ -1,0 +1,53 @@
+#toggle {
+  position: relative;
+	cursor: pointer;
+}
+#toggle input {
+	position: absolute;
+	appearance: none;
+}
+#custom {
+	width: 55px;
+	height: 30px;
+	background: rgba(36, 33, 32, 0.6);
+	display: inline-block;
+	border-radius: 15px;
+	transition: all 300ms;
+	&:before {
+		content: "F";
+		position: absolute;
+		left: -30px;
+		top: 8px;
+		color: #fff;
+	}
+	&:after {
+		content: "C";
+		position: absolute;
+		left: 75px;
+		top: 8px;
+		color: rgba(36, 33, 32, 0.6);
+	}
+}
+#circle {
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	background: #fff;
+	box-shadow: 0 1px 5px 0 rgba(0,0,0,0.4);
+	border-radius: 20px;
+	transition: all 300ms;
+}
+
+#toggle input:checked + #custom #circle {
+	left: 30px;
+}
+
+#toggle input:checked + #custom:before {
+	color: rgba(36, 33, 32, 0.6);
+}
+
+#toggle input:checked + #custom:after {
+	color: #fff;
+}

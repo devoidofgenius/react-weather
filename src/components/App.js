@@ -4,6 +4,7 @@ import 'normalize.css';
 import Forecast from './Forecast';
 import Current from './Current';
 import TimeLocation from './TimeLocation';
+import ScaleToggle from './ScaleToggle';
 
 import { fetchData } from '../ApiUtils';
 import icons from '../icons';
@@ -70,12 +71,7 @@ class App extends React.Component {
     }
     return (
       <div className="app-wrapper">
-        <label id="toggle">
-        	<input type="checkbox" checked={this.state.isFahrenheit ? false : true} onClick={this.toggleTemp} />
-        	<span id="custom">
-        		<span id="circle"></span>
-        	</span>
-        </label>
+        <ScaleToggle isFahrenheit={this.state.isFahrenheit} toggleTemp={this.toggleTemp} />
         <TimeLocation time={getTime(this.state.dt)} city={this.state.city} />
         <div className="current-wrap">
           <Current isFahrenheit={this.state.isFahrenheit} isSun={this.state.isSun} city={this.state.city} currentTemp={this.state.currentTemp} currentTempCelcius={convertToCelcius(this.state.currentTemp)} currentCondition={this.state.currentCondition} currentIconKey={convertIconID(this.state.currentID)} icons={this.state.icons}/>
