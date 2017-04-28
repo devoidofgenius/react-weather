@@ -59,7 +59,7 @@ class App extends React.Component {
 
     if (!this.state.currentID) {
       return(
-        <p>Loading...</p>
+        <span className="loading"></span>
       )
     }
     function getTime(unixTimeStamp) {
