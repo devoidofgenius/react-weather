@@ -1,3 +1,3 @@
-# React Starter w/ Sass
+# React Weather App
 
-A `create-react-app` with Sass base for creating React apps.
+This is an ongoing project. I have lots of things I'd like to do to improve this app.
